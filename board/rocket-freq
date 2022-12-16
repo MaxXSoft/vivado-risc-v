@@ -5,12 +5,12 @@ vc707         Rocket.*l2w?      62.5
 vc707         Rocket.*b[4-9].*  80.0
 vc707         Rocket.*          100.0
 
-(genesys2|kc705)    Rocket.*gem.*     31.25
-(genesys2|kc705)    Rocket64x1        50.0
-(genesys2|kc705)    Rocket64[xyz].*   31.25
-(genesys2|kc705)    Rocket.*l2w?      62.5
-(genesys2|kc705)    Rocket.*b[4-9].*  80.0
-(genesys2|kc705)    Rocket.*          100.0
+(genesys2|kc705|stlv7325)    Rocket.*gem.*     31.25
+(genesys2|kc705|stlv7325)    Rocket64x1        50.0
+(genesys2|kc705|stlv7325)    Rocket64[xyz].*   31.25
+(genesys2|kc705|stlv7325)    Rocket.*l2w?      62.5
+(genesys2|kc705|stlv7325)    Rocket.*b[4-9].*  80.0
+(genesys2|kc705|stlv7325)    Rocket.*          100.0
 
 vcu1525       Rocket64.*gem.*       31.25
 vcu1525       Rocket64[xyz].*       31.25
