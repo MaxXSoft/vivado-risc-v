@@ -59,11 +59,9 @@ module ethernet_stlv7325 (
 // STLV7325 board uses Marvell Alaska 88E1111 PHY
 
 assign status_vector[15:9] = 0;
+assign gmii_gtx_clk = clock125;
 
-eth_mac_1g_gmii_fifo #(
-    .TARGET("XILINX"),
-    .IODDR_STYLE("IODDR"),
-    .CLOCK_INPUT_STYLE("BUFR"),
+eth_mac_1g_fifo #(
     .ENABLE_PADDING(1),
     .AXIS_DATA_WIDTH(8),
     .MIN_FRAME_LENGTH(64),
@@ -75,8 +73,10 @@ eth_mac_1g_gmii_fifo #(
     .RX_DROP_WHEN_FULL(1)
 )
 eth_mac_inst (
-    .gtx_clk(clock125),
-    .gtx_rst(reset),
+    .rx_clk(gmii_rx_clk),
+    .rx_rst(reset),
+    .tx_clk(clock125),
+    .tx_rst(reset),
     .logic_clk(clock125),
     .logic_rst(reset),
 
@@ -94,15 +94,17 @@ eth_mac_inst (
     .rx_axis_tlast(rx_axis_tlast),
     .rx_axis_tuser(rx_axis_tuser),
 
-    .gmii_rx_clk(gmii_rx_clk),
     .gmii_rxd(gmii_rxd),
     .gmii_rx_dv(gmii_rx_dv),
     .gmii_rx_er(gmii_rx_er),
-    .gmii_tx_clk(gmii_gtx_clk),
-    .mii_tx_clk(gmii_tx_clk),
     .gmii_txd(gmii_txd),
     .gmii_tx_en(gmii_tx_en),
     .gmii_tx_er(gmii_tx_er),
+
+    .rx_clk_enable(1'b1),
+    .tx_clk_enable(1'b1),
+    .rx_mii_select(1'b0),
+    .tx_mii_select(1'b0),
 
     .tx_fifo_overflow(status_vector[0]),
     .tx_fifo_bad_frame(status_vector[1]),

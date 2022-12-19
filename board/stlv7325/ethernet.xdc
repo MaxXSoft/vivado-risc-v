@@ -31,7 +31,8 @@ set_property -dict { PACKAGE_PIN G10   IOSTANDARD LVCMOS25 SLEW FAST DRIVE 16 } 
 set_property -dict { PACKAGE_PIN F9    IOSTANDARD LVCMOS25 SLEW FAST DRIVE 16 } [get_ports { gmii_txd[7] }];
 
 create_clock -period 8.000 -name gmii_rx_clk [get_ports gmii_rx_clk]
-create_clock -period 40.000 -name gmii_tx_clk [get_ports gmii_tx_clk]
+# create_clock -period 40.000 -name gmii_tx_clk [get_ports gmii_tx_clk]
+create_clock -period 8.000 -name gmii_gtx_clk [get_ports gmii_gtx_clk]
 
 # STLV7325 board uses Marvell Alaska 88E1111 PHY, 2.5V signaling
 
