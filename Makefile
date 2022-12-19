@@ -28,7 +28,7 @@ SKIP_SUBMODULES = torture software/gemmini-rocc-tests software/onnxruntime-riscv
 
 update-submodules:
 	git submodule sync --recursive
-	git $(foreach m,$(SKIP_SUBMODULES),-c submodule.$(m).update=none) submodule update --init --force --recursive
+	git $(foreach m,$(SKIP_SUBMODULES),-c submodule.$(m).update=none) submodule update --init --force --recursive --depth 1 --single-branch
 
 clean-submodules:
 	git submodule foreach --recursive git clean -xfdq
