@@ -1,5 +1,10 @@
 set files [list \
-  [file normalize "../../ethernet/verilog-ethernet/rtl/eth_mac_1g_fifo.v"] \
+  [file normalize "../../ethernet/verilog-ethernet/rtl/eth_mac_1g_rgmii_fifo.v"] \
+  [file normalize "../../ethernet/verilog-ethernet/rtl/eth_mac_1g_rgmii.v"] \
+  [file normalize "../../ethernet/verilog-ethernet/rtl/ssio_ddr_in.v"] \
+  [file normalize "../../ethernet/verilog-ethernet/rtl/rgmii_phy_if.v"] \
+  [file normalize "../../ethernet/verilog-ethernet/rtl/iddr.v"] \
+  [file normalize "../../ethernet/verilog-ethernet/rtl/oddr.v"] \
   [file normalize "../../ethernet/verilog-ethernet/lib/axis/rtl/axis_adapter.v"] \
   [file normalize "../../ethernet/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v"] \
   [file normalize "../../ethernet/verilog-ethernet/lib/axis/rtl/axis_async_fifo_adapter.v"] \
@@ -16,5 +21,6 @@ set files [list \
   [file normalize ../../ethernet/verilog-ethernet/lib/axis/syn/vivado/sync_reset.tcl] \
   [file normalize ../../ethernet/verilog-ethernet/lib/axis/syn/vivado/axis_async_fifo.tcl] \
   [file normalize ../../ethernet/verilog-ethernet/syn/vivado/eth_mac_fifo.tcl] \
+  [file normalize ../../ethernet/verilog-ethernet/syn/vivado/eth_mac_1g_rgmii.tcl] \
 ]
 add_files -norecurse -fileset $constraint_fileset $files
