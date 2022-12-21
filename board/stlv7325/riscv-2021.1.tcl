@@ -216,20 +216,20 @@ proc write_mig_file_riscv_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {  <TargetFPGA>xc7k325t-ffg676/-2</TargetFPGA>}
    puts $mig_prj_file {  <Version>4.2</Version>}
    puts $mig_prj_file {  <SystemClock>No Buffer</SystemClock>}
-   puts $mig_prj_file {  <ReferenceClock>No Buffer</ReferenceClock>}
+   puts $mig_prj_file {  <ReferenceClock>Use System Clock</ReferenceClock>}
    puts $mig_prj_file {  <SysResetPolarity>ACTIVE HIGH</SysResetPolarity>}
    puts $mig_prj_file {  <BankSelectionFlag>FALSE</BankSelectionFlag>}
    puts $mig_prj_file {  <InternalVref>0</InternalVref>}
    puts $mig_prj_file {  <dci_hr_inouts_inputs>40 Ohms</dci_hr_inouts_inputs>}
    puts $mig_prj_file {  <dci_cascade>1</dci_cascade>}
    puts $mig_prj_file {  <Controller number="0">}
-   puts $mig_prj_file {    <MemoryDevice>DDR3_SDRAM/SODIMMs/MT8JSF12864HZ-1G4</MemoryDevice>}
-   puts $mig_prj_file {    <TimePeriod>1500</TimePeriod>}
-   puts $mig_prj_file {    <VccAuxIO>1.8V</VccAuxIO>}
+   puts $mig_prj_file {    <MemoryDevice>DDR3_SDRAM/SODIMMs/MT8JTF12864HZ-1G6</MemoryDevice>}
+   puts $mig_prj_file {    <TimePeriod>1250</TimePeriod>}
+   puts $mig_prj_file {    <VccAuxIO>2.0V</VccAuxIO>}
    puts $mig_prj_file {    <PHYRatio>4:1</PHYRatio>}
-   puts $mig_prj_file {    <InputClkFreq>190.476</InputClkFreq>}
+   puts $mig_prj_file {    <InputClkFreq>200</InputClkFreq>}
    puts $mig_prj_file {    <UIExtraClocks>0</UIExtraClocks>}
-   puts $mig_prj_file {    <MMCM_VCO>666</MMCM_VCO>}
+   puts $mig_prj_file {    <MMCM_VCO>800</MMCM_VCO>}
    puts $mig_prj_file {    <MMCMClkOut0> 1.000</MMCMClkOut0>}
    puts $mig_prj_file {    <MMCMClkOut1>1</MMCMClkOut1>}
    puts $mig_prj_file {    <MMCMClkOut2>1</MMCMClkOut2>}
@@ -371,11 +371,11 @@ proc write_mig_file_riscv_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {      <Pin Bank="Select Bank" PADName="No connect" name="tg_compare_error"/>}
    puts $mig_prj_file {    </System_Control>}
    puts $mig_prj_file {    <TimingParameters>}
-   puts $mig_prj_file {      <Parameters tcke="5.625" tfaw="30" tras="36" trcd="13.5" trefi="7.8" trfc="110" trp="13.5" trrd="6" trtp="7.5" twtr="7.5"/>}
+   puts $mig_prj_file {      <Parameters tcke="5" tfaw="30" tras="35" trcd="13.75" trefi="7.8" trfc="110" trp="13.75" trrd="6" trtp="7.5" twtr="7.5"/>}
    puts $mig_prj_file {    </TimingParameters>}
    puts $mig_prj_file {    <mrBurstLength name="Burst Length">8 - Fixed</mrBurstLength>}
    puts $mig_prj_file {    <mrBurstType name="Read Burst Type and Length">Sequential</mrBurstType>}
-   puts $mig_prj_file {    <mrCasLatency name="CAS Latency">9</mrCasLatency>}
+   puts $mig_prj_file {    <mrCasLatency name="CAS Latency">11</mrCasLatency>}
    puts $mig_prj_file {    <mrMode name="Mode">Normal</mrMode>}
    puts $mig_prj_file {    <mrDllReset name="DLL Reset">No</mrDllReset>}
    puts $mig_prj_file {    <mrPdMode name="DLL control for precharge PD">Slow Exit</mrPdMode>}
@@ -383,13 +383,13 @@ proc write_mig_file_riscv_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <emrOutputDriveStrength name="Output Driver Impedance Control">RZQ/7</emrOutputDriveStrength>}
    puts $mig_prj_file {    <emrMirrorSelection name="Address Mirroring">Disable</emrMirrorSelection>}
    puts $mig_prj_file {    <emrCSSelection name="Controller Chip Select Pin">Enable</emrCSSelection>}
-   puts $mig_prj_file {    <emrRTT name="RTT (nominal) - On Die Termination (ODT)">RZQ/6</emrRTT>}
+   puts $mig_prj_file {    <emrRTT name="RTT (nominal) - On Die Termination (ODT)">RZQ/4</emrRTT>}
    puts $mig_prj_file {    <emrPosted name="Additive Latency (AL)">0</emrPosted>}
    puts $mig_prj_file {    <emrOCD name="Write Leveling Enable">Disabled</emrOCD>}
    puts $mig_prj_file {    <emrDQS name="TDQS enable">Enabled</emrDQS>}
    puts $mig_prj_file {    <emrRDQS name="Qoff">Output Buffer Enabled</emrRDQS>}
    puts $mig_prj_file {    <mr2PartialArraySelfRefresh name="Partial-Array Self Refresh">Full Array</mr2PartialArraySelfRefresh>}
-   puts $mig_prj_file {    <mr2CasWriteLatency name="CAS write latency">7</mr2CasWriteLatency>}
+   puts $mig_prj_file {    <mr2CasWriteLatency name="CAS write latency">8</mr2CasWriteLatency>}
    puts $mig_prj_file {    <mr2AutoSelfRefresh name="Auto Self Refresh">Enabled</mr2AutoSelfRefresh>}
    puts $mig_prj_file {    <mr2SelfRefreshTempRange name="High Temparature Self Refresh Rate">Normal</mr2SelfRefreshTempRange>}
    puts $mig_prj_file {    <mr2RTTWR name="RTT_WR - Dynamic On Die Termination (ODT)">Dynamic ODT off</mr2RTTWR>}
@@ -652,7 +652,6 @@ proc create_hier_cell_DDR { parentCell nameHier } {
   # Create pins
   create_bd_pin -dir I -type clk axi_clock
   create_bd_pin -dir I -type rst axi_reset
-  create_bd_pin -dir I -type clk clock_100MHz
   create_bd_pin -dir I -type clk clock_200MHz
   create_bd_pin -dir I -type clk clock_ok
   create_bd_pin -dir I -from 11 -to 0 device_temp
@@ -682,7 +681,7 @@ proc create_hier_cell_DDR { parentCell nameHier } {
 
   # Generate the PRJ File for MIG
   set str_mig_folder [get_property IP_DIR [ get_ips [ get_property CONFIG.Component_Name $mig_7series_0 ] ] ]
-  set str_mig_file_name mig_a.prj
+  set str_mig_file_name mig_b.prj
   set str_mig_file_path ${str_mig_folder}/${str_mig_file_name}
 
   write_mig_file_riscv_mig_7series_0_0 $str_mig_file_path
@@ -691,7 +690,7 @@ proc create_hier_cell_DDR { parentCell nameHier } {
    CONFIG.BOARD_MIG_PARAM {Custom} \
    CONFIG.MIG_DONT_TOUCH_PARAM {Custom} \
    CONFIG.RESET_BOARD_INTERFACE {Custom} \
-   CONFIG.XML_INPUT_FILE {mig_a.prj} \
+   CONFIG.XML_INPUT_FILE {mig_b.prj} \
  ] $mig_7series_0
 
   # Create interface connections
@@ -702,7 +701,6 @@ proc create_hier_cell_DDR { parentCell nameHier } {
   # Create port connections
   connect_bd_net -net AXI_clock [get_bd_pins axi_clock] [get_bd_pins axi_smc_1/aclk]
   connect_bd_net -net AXI_reset [get_bd_pins axi_reset] [get_bd_pins axi_smc_1/aresetn]
-  connect_bd_net -net clock_100MHz [get_bd_pins clock_100MHz] [get_bd_pins mig_7series_0/clk_ref_i]
   connect_bd_net -net clock_200MHz [get_bd_pins clock_200MHz] [get_bd_pins mem_reset_control_0/clock] [get_bd_pins mig_7series_0/sys_clk_i]
   connect_bd_net -net clock_ok [get_bd_pins clock_ok] [get_bd_pins mem_reset_control_0/clock_ok]
   connect_bd_net -net device_temp [get_bd_pins device_temp] [get_bd_pins mig_7series_0/device_temp_i]
@@ -868,7 +866,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net IO_sdio_dat [get_bd_ports sdio_dat] [get_bd_pins IO/sdio_dat]
   connect_bd_net -net IO_uart_rxd [get_bd_ports usb_uart_rxd] [get_bd_pins IO/uart_rxd]
   connect_bd_net -net IO_uart_txd [get_bd_ports usb_uart_txd] [get_bd_pins IO/uart_txd]
-  connect_bd_net -net clock_100MHz [get_bd_pins DDR/clock_100MHz] [get_bd_pins IO/clock_100MHz] [get_bd_pins clk_wiz_0/clk_out3]
+  connect_bd_net -net clock_100MHz [get_bd_pins IO/clock_100MHz] [get_bd_pins clk_wiz_0/clk_out3]
   connect_bd_net -net clock_125MHz [get_bd_pins IO/clock_125MHz] [get_bd_pins clk_wiz_0/clk_out4]
   connect_bd_net -net clock_125MHz90 [get_bd_pins IO/clock_125MHz90] [get_bd_pins clk_wiz_0/clk_out5]
   connect_bd_net -net clock_200MHz [get_bd_pins DDR/clock_200MHz] [get_bd_pins IO/clock_200MHz] [get_bd_pins clk_wiz_0/clk_out2]
