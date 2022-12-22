@@ -7,14 +7,6 @@ module ethernet_stlv7325 (
     (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF TX_AXIS:RX_AXIS, ASSOCIATED_RESET reset, FREQ_HZ 125000000" *)
     input wire clock125,
 
-    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clock125_90 CLK" *)
-    (* X_INTERFACE_PARAMETER = "FREQ_HZ 125000000" *)
-    input wire clock125_90,
-
-    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clock200 CLK" *)
-    (* X_INTERFACE_PARAMETER = "FREQ_HZ 200000000" *)
-    input wire clock200,
-
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 TX_AXIS TDATA" *)
     input wire [7:0] tx_axis_tdata,
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 TX_AXIS TKEEP" *)
@@ -43,33 +35,33 @@ module ethernet_stlv7325 (
 
     output wire [15:0] status_vector,
 
-    // RGMII - Reduced Gigabit Media-Independent Interface
-    (* X_INTERFACE_INFO = "xilinx.com:interface:rgmii:1.0 RGMII TD" *)
-    output [3:0] rgmii_txd, // Ethernet transmit data (required)
-    (* X_INTERFACE_INFO = "xilinx.com:interface:rgmii:1.0 RGMII TX_CTL" *)
-    output rgmii_tx_ctl, // Ethernet transmit control (required)
-    (* X_INTERFACE_INFO = "xilinx.com:interface:rgmii:1.0 RGMII TXC" *)
-    output rgmii_tx_clk, // Ethernet transmit clock (required)
-    (* X_INTERFACE_INFO = "xilinx.com:interface:rgmii:1.0 RGMII RD" *)
-    input [3:0] rgmii_rxd, // Ethernet receive data (required)
-    (* X_INTERFACE_INFO = "xilinx.com:interface:rgmii:1.0 RGMII RX_CTL" *)
-    input rgmii_rx_ctl, // Ethernet receive control (required)
-    (* X_INTERFACE_INFO = "xilinx.com:interface:rgmii:1.0 RGMII RXC" *)
-    input rgmii_rx_clk // Ethernet receive clock (required)
+    // GMII - Gigabit Media Independent Interface
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII TXD" *)
+    output [7:0] gmii_txd, // Ethernet transmit data. (required)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII TX_EN" *)
+    output gmii_tx_en, // Ethernet transmit enable. (required)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII TX_ER" *)
+    output gmii_tx_er, // Ethernet transmit error.
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII RXD" *)
+    input [7:0] gmii_rxd, // Ethernet receive data.  (required)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII RX_DV" *)
+    input gmii_rx_dv, // Ethernet receive data valid. (required)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII RX_ER" *)
+    input gmii_rx_er, // Ethernet receive error. (required)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII TX_CLK" *)
+    input gmii_tx_clk, // Ethernet transmit clock for 10/100Mb/s Ethernet speeds
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII GTX_CLK" *)
+    output gmii_gtx_clk, // Ethernet transmit clock for 1Gb/s Ethernet
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gmii:1.0 GMII RX_CLK" *)
+    input gmii_rx_clk // Ethernet receive clock
 );
 
 // STLV7325 board uses Marvell Alaska 88E1111 PHY
 
 assign status_vector[15:9] = 0;
+assign gmii_gtx_clk = clock125;
 
-wire [3:0] rgmii_rxd_delay;
-wire rgmii_rx_ctl_delay;
-
-eth_mac_1g_rgmii_fifo #(
-    .TARGET("XILINX"),
-    .IODDR_STYLE("IODDR"),
-    .CLOCK_INPUT_STYLE("BUFR"),
-    .USE_CLK90("TRUE"),
+eth_mac_1g_fifo #(
     .ENABLE_PADDING(1),
     .AXIS_DATA_WIDTH(8),
     .MIN_FRAME_LENGTH(64),
@@ -81,9 +73,10 @@ eth_mac_1g_rgmii_fifo #(
     .RX_DROP_WHEN_FULL(1)
 )
 eth_mac_inst (
-    .gtx_clk(clock125),
-    .gtx_clk90(clock125_90),
-    .gtx_rst(reset),
+    .rx_clk(gmii_rx_clk),
+    .rx_rst(reset),
+    .tx_clk(clock125),
+    .tx_rst(reset),
     .logic_clk(clock125),
     .logic_rst(reset),
 
@@ -101,12 +94,17 @@ eth_mac_inst (
     .rx_axis_tlast(rx_axis_tlast),
     .rx_axis_tuser(rx_axis_tuser),
 
-    .rgmii_rx_clk(rgmii_rx_clk),
-    .rgmii_rxd(rgmii_rxd_delay),
-    .rgmii_rx_ctl(rgmii_rx_ctl_delay),
-    .rgmii_tx_clk(rgmii_tx_clk),
-    .rgmii_txd(rgmii_txd),
-    .rgmii_tx_ctl(rgmii_tx_ctl),
+    .gmii_rxd(gmii_rxd),
+    .gmii_rx_dv(gmii_rx_dv),
+    .gmii_rx_er(gmii_rx_er),
+    .gmii_txd(gmii_txd),
+    .gmii_tx_en(gmii_tx_en),
+    .gmii_tx_er(gmii_tx_er),
+
+    .rx_clk_enable(1'b1),
+    .tx_clk_enable(1'b1),
+    .rx_mii_select(1'b0),
+    .tx_mii_select(1'b0),
 
     .tx_fifo_overflow(status_vector[0]),
     .tx_fifo_bad_frame(status_vector[1]),
@@ -119,54 +117,6 @@ eth_mac_inst (
     .rx_fifo_good_frame(status_vector[8]),
 
     .ifg_delay(12)
-);
-
-(* IODELAY_GROUP = "rgmii_idelay_group" *)
-IDELAYCTRL rgmii_idelay_control_block (
-    .REFCLK(clock200),
-    .RST(reset),
-    .RDY()
-);
-
-genvar n;
-generate for (n = 0; n < 4; n = n + 1) begin
-    (* IODELAY_GROUP = "rgmii_idelay_group" *)
-    IDELAYE2 #(
-        .IDELAY_TYPE("FIXED")
-    )
-    rgmii_idelay_rxd (
-        .IDATAIN(rgmii_rxd[n]),
-        .DATAOUT(rgmii_rxd_delay[n]),
-        .DATAIN(1'b0),
-        .C(1'b0),
-        .CE(1'b0),
-        .INC(1'b0),
-        .CINVCTRL(1'b0),
-        .CNTVALUEIN(5'd0),
-        .CNTVALUEOUT(),
-        .LD(1'b0),
-        .LDPIPEEN(1'b0),
-        .REGRST(1'b0)
-    );
-end endgenerate
-
-(* IODELAY_GROUP = "rgmii_idelay_group" *)
-IDELAYE2 #(
-    .IDELAY_TYPE("FIXED")
-)
-rgmii_idelay_ctl (
-    .IDATAIN(rgmii_rx_ctl),
-    .DATAOUT(rgmii_rx_ctl_delay),
-    .DATAIN(1'b0),
-    .C(1'b0),
-    .CE(1'b0),
-    .INC(1'b0),
-    .CINVCTRL(1'b0),
-    .CNTVALUEIN(5'd0),
-    .CNTVALUEOUT(),
-    .LD(1'b0),
-    .LDPIPEEN(1'b0),
-    .REGRST(1'b0)
 );
 
 endmodule

@@ -454,7 +454,7 @@ proc create_hier_cell_IO { parentCell nameHier } {
 
   create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 S00_AXI
 
-  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:rgmii_rtl:1.0 rgmii
+  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:gmii_rtl:1.0 GMII
 
   create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:uart_rtl:1.0 uart
 
@@ -464,8 +464,6 @@ proc create_hier_cell_IO { parentCell nameHier } {
   create_bd_pin -dir I -type rst axi_reset
   create_bd_pin -dir I -type clk clock_100MHz
   create_bd_pin -dir I -type clk clock_125MHz
-  create_bd_pin -dir I -type clk clock_125MHz90
-  create_bd_pin -dir I -type clk clock_200MHz
   create_bd_pin -dir O -from 11 -to 0 device_temp
   create_bd_pin -dir O -type clk eth_mdio_clock
   create_bd_pin -dir IO eth_mdio_data
@@ -570,7 +568,7 @@ proc create_hier_cell_IO { parentCell nameHier } {
  ] $xlconcat_0
 
   # Create interface connections
-  connect_bd_intf_net -intf_net Ethernet_RGMII [get_bd_intf_pins rgmii] [get_bd_intf_pins ethernet_stream_0/RGMII]
+  connect_bd_intf_net -intf_net Ethernet_GMII [get_bd_intf_pins GMII] [get_bd_intf_pins ethernet_stream_0/GMII]
   connect_bd_intf_net -intf_net Ethernet_TX_AXIS [get_bd_intf_pins Ethernet/TX_AXIS] [get_bd_intf_pins ethernet_stream_0/TX_AXIS]
   connect_bd_intf_net -intf_net S01_AXI_1 [get_bd_intf_pins Ethernet/M_AXI] [get_bd_intf_pins io_axi_m/S01_AXI]
   connect_bd_intf_net -intf_net UART_RS232 [get_bd_intf_pins uart] [get_bd_intf_pins UART/RS232]
@@ -599,8 +597,6 @@ proc create_hier_cell_IO { parentCell nameHier } {
   connect_bd_net -net UART_interrupt [get_bd_pins UART/interrupt] [get_bd_pins xlconcat_0/In0]
   connect_bd_net -net clock_100MHz [get_bd_pins clock_100MHz] [get_bd_pins SD/clock] [get_bd_pins UART/clock] [get_bd_pins io_axi_m/aclk1] [get_bd_pins io_axi_s/aclk1]
   connect_bd_net -net clock_125MHz [get_bd_pins clock_125MHz] [get_bd_pins Ethernet/clock] [get_bd_pins ethernet_stream_0/clock125] [get_bd_pins io_axi_m/aclk2] [get_bd_pins io_axi_s/aclk2]
-  connect_bd_net -net clock_125MHz90 [get_bd_pins clock_125MHz90] [get_bd_pins ethernet_stream_0/clock125_90]
-  connect_bd_net -net clock_200MHz [get_bd_pins clock_200MHz] [get_bd_pins ethernet_stream_0/clock200]
   connect_bd_net -net const_zero [get_bd_pins Ethernet/mdio_int] [get_bd_pins SD/sdio_cd] [get_bd_pins const_zero/dout]
   connect_bd_net -net device_temp [get_bd_pins device_temp] [get_bd_pins XADC/temp_out]
   connect_bd_net -net interrupts [get_bd_pins interrupts] [get_bd_pins xlconcat_0/dout]
@@ -753,7 +749,7 @@ proc create_root_design { parentCell } {
   # Create interface ports
   set ddr3_sdram [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddrx_rtl:1.0 ddr3_sdram ]
 
-  set rgmii [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:rgmii_rtl:1.0 rgmii ]
+  set gmii [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gmii_rtl:1.0 gmii ]
 
   set sys_diff_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 sys_diff_clock ]
   set_property -dict [ list \
@@ -811,11 +807,6 @@ proc create_root_design { parentCell } {
    CONFIG.CLKOUT4_REQUESTED_OUT_FREQ {125.000} \
    CONFIG.CLKOUT4_USED {true} \
    CONFIG.CLKOUT5_DRIVES {BUFG} \
-   CONFIG.CLKOUT5_JITTER {107.523} \
-   CONFIG.CLKOUT5_PHASE_ERROR {89.971} \
-   CONFIG.CLKOUT5_REQUESTED_OUT_FREQ {125.000} \
-   CONFIG.CLKOUT5_REQUESTED_PHASE {90.000} \
-   CONFIG.CLKOUT5_USED {true} \
    CONFIG.CLKOUT6_DRIVES {BUFG} \
    CONFIG.CLKOUT7_DRIVES {BUFG} \
    CONFIG.MMCM_CLKFBOUT_MULT_F {5.000} \
@@ -825,13 +816,11 @@ proc create_root_design { parentCell } {
    CONFIG.MMCM_CLKOUT1_DIVIDE {5} \
    CONFIG.MMCM_CLKOUT2_DIVIDE {10} \
    CONFIG.MMCM_CLKOUT3_DIVIDE {8} \
-   CONFIG.MMCM_CLKOUT4_DIVIDE {8} \
-   CONFIG.MMCM_CLKOUT4_PHASE {90.000} \
-   CONFIG.NUM_OUT_CLKS {5} \
+   CONFIG.NUM_OUT_CLKS {4} \
    CONFIG.PRIM_IN_FREQ {200.000} \
    CONFIG.PRIM_SOURCE {No_buffer} \
    CONFIG.SECONDARY_SOURCE {Single_ended_clock_capable_pin} \
-   CONFIG.USE_PHASE_ALIGNMENT {true} \
+   CONFIG.USE_PHASE_ALIGNMENT {false} \
    CONFIG.USE_RESET {false} \
  ] $clk_wiz_0
 
@@ -848,7 +837,7 @@ proc create_root_design { parentCell } {
 
   # Create interface connections
   connect_bd_intf_net -intf_net DDR_ddr3_sdram [get_bd_intf_ports ddr3_sdram] [get_bd_intf_pins DDR/ddr3_sdram]
-  connect_bd_intf_net -intf_net IO_RGMII [get_bd_intf_ports rgmii] [get_bd_intf_pins IO/rgmii]
+  connect_bd_intf_net -intf_net IO_GMII [get_bd_intf_ports gmii] [get_bd_intf_pins IO/GMII]
   connect_bd_intf_net -intf_net MEM_AXI4 [get_bd_intf_pins DDR/S00_AXI] [get_bd_intf_pins RocketChip/MEM_AXI4]
   connect_bd_intf_net -intf_net io_axi_m [get_bd_intf_pins IO/M00_AXI] [get_bd_intf_pins RocketChip/DMA_AXI4]
   connect_bd_intf_net -intf_net io_axi_s [get_bd_intf_pins IO/S00_AXI] [get_bd_intf_pins RocketChip/IO_AXI4]
@@ -868,8 +857,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net IO_uart_txd [get_bd_ports usb_uart_txd] [get_bd_pins IO/uart_txd]
   connect_bd_net -net clock_100MHz [get_bd_pins IO/clock_100MHz] [get_bd_pins clk_wiz_0/clk_out3]
   connect_bd_net -net clock_125MHz [get_bd_pins IO/clock_125MHz] [get_bd_pins clk_wiz_0/clk_out4]
-  connect_bd_net -net clock_125MHz90 [get_bd_pins IO/clock_125MHz90] [get_bd_pins clk_wiz_0/clk_out5]
-  connect_bd_net -net clock_200MHz [get_bd_pins DDR/clock_200MHz] [get_bd_pins IO/clock_200MHz] [get_bd_pins clk_wiz_0/clk_out2]
+  connect_bd_net -net clock_200MHz [get_bd_pins DDR/clock_200MHz] [get_bd_pins clk_wiz_0/clk_out2]
   connect_bd_net -net clock_ok [get_bd_pins DDR/clock_ok] [get_bd_pins RocketChip/clock_ok] [get_bd_pins RocketChip/io_ok] [get_bd_pins clk_wiz_0/locked]
   connect_bd_net -net device_temp [get_bd_pins DDR/device_temp] [get_bd_pins IO/device_temp]
   connect_bd_net -net mem_ok [get_bd_pins DDR/mem_ok] [get_bd_pins RocketChip/mem_ok]
